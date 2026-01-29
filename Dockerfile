@@ -1,4 +1,4 @@
-FROM jupyterhub/jupyterhub:4.1.5
+FROM python:3.11-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -12,6 +12,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir \
+    jupyterhub \
     jupyterlab \
     oauthenticator
 
