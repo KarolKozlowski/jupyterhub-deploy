@@ -17,6 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set image tag
+        run: echo "IMAGE_TAG=ghcr.io/${GITHUB_REPOSITORY,,}/jupyterhub:latest" >> "$GITHUB_ENV"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -31,13 +34,13 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          tags: ghcr.io/${{ github.repository }}/jupyterhub:latest
+          tags: ${{ env.IMAGE_TAG }}
           push: ${{ github.event_name == 'push' }}
 
       - name: Scan image for vulnerabilities
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          image-ref: ghcr.io/${{ github.repository }}/jupyterhub:latest
+          image-ref: ${{ env.IMAGE_TAG }}
           format: sarif
           output: trivy-results.sarif
           exit-code: "1"
