@@ -5,6 +5,7 @@ DOCKER ?= docker
 
 build:
 	$(DOCKER) build -t $(IMAGE) .
+	@$(DOCKER) image ls --format "ID: {{.ID}}  Size: {{.Size}}  Created: {{.CreatedSince}}  Repo: {{.Repository}}  Tag: {{.Tag}}" $(IMAGE)
 
 test: build
 	$(DOCKER) run --rm $(IMAGE) jupyterhub --version
