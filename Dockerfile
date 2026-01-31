@@ -6,7 +6,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN pip install --no-cache-dir \
     oauthenticator \
-    dockerspawner
+    dockerspawner \
+    jupyterhub-idle-culler
 
 EXPOSE 8000
 
