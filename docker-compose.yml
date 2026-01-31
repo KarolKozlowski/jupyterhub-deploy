@@ -1,0 +1,39 @@
+services:
+  jupyterhub:
+    image: registry.np.dotnot.pl/ghcr.io/karolkozlowski/jupyterhub-deploy/jupyterhub:latest
+    ports:
+      - "172.30.0.1:21200:8000"
+    volumes:
+      - /share/www/jupyterhub/config:/etc/jupyterhub:ro
+      - /share/db/jupyterhub/config:/srv/jupyterhub
+    command: jupyterhub -f /etc/jupyterhub/jupyterhub_config.py
+    networks:
+      - jupyterhub-internal
+      - jupyterhub-user-net
+    restart: unless-stopped  # Add this
+
+  docker-proxy:
+    image: registry.np.dotnot.pl/docker.io/tecnativa/docker-socket-proxy
+    container_name: docker-proxy
+    environment:
+      - CONTAINERS=1
+      - IMAGES=1
+      - NETWORKS=1
+      - VOLUMES=1
+      - POST=1
+      - DELETE=1
+      - EXEC=0
+      - SERVICES=0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - jupyterhub-internal
+    restart: unless-stopped
+
+networks:
+  jupyterhub-internal:
+    name: jupyterhub-internal  # Prevents compose prefix
+    driver: bridge
+  jupyterhub-user-net:
+    name: jupyterhub-user-net  # Prevents compose prefix
+    driver: bridge
