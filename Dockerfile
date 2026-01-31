@@ -5,7 +5,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1
 
 RUN pip install --no-cache-dir \
-    oauthenticator
+    oauthenticator \
+    dockerspawner
 
 EXPOSE 8000
 
