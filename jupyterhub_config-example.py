@@ -28,6 +28,7 @@ def get_or_create_secret(key_name, base_dir='/srv/jupyterhub'):
         os.chmod(secret_file, 0o600)  # Secure permissions
         return secret
 
+
 ### --- JupyterHub OAuth configuration --- ###
 c.JupyterHub.authenticator_class = "generic-oauth"
 
@@ -115,7 +116,18 @@ c.DockerSpawner.prefix = 'jupyterhub'
 c.DockerSpawner.name_template = '{prefix}-{username}'
 
 # Docker image for user containers
-c.DockerSpawner.image = 'registry.np.dotnot.pl/docker.io/jupyter/base-notebook:latest'
+c.DockerSpawner.image = 'registry.np.dotnot.pl/quay.io/jupyter/pytorch-notebook:cuda12-latest'
+
+# Enable GPU support
+c.DockerSpawner.extra_host_config = {
+    'device_requests': [
+        {
+            'driver': 'nvidia',
+            'count': -1,  # -1 = all GPUs, or specify number
+            'capabilities': [['gpu', 'compute', 'utility']]
+        }
+    ]
+}
 
 # Use internal IPs for communication
 c.DockerSpawner.use_internal_ip = True
