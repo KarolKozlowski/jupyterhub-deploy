@@ -1,6 +1,6 @@
 services:
   jupyterhub:
-    image: registry.np.dotnot.pl/ghcr.io/karolkozlowski/jupyterhub-deploy/jupyterhub:latest
+    image: ${REGISTRY_PROXY:-registry.np.dotnot.pl/}ghcr.io/karolkozlowski/jupyterhub-deploy/jupyterhub:latest
     ports:
       - "172.30.0.1:21200:8000"
     volumes:
@@ -13,7 +13,7 @@ services:
     restart: unless-stopped  # Add this
 
   docker-proxy:
-    image: registry.np.dotnot.pl/docker.io/tecnativa/docker-socket-proxy
+    image: ${REGISTRY_PROXY:-registry.np.dotnot.pl/}docker.io/tecnativa/docker-socket-proxy
     container_name: docker-proxy
     environment:
       - CONTAINERS=1

@@ -116,7 +116,10 @@ c.DockerSpawner.prefix = 'jupyterhub'
 c.DockerSpawner.name_template = '{prefix}-{username}'
 
 # Docker image for user containers
-c.DockerSpawner.image = 'registry.np.dotnot.pl/quay.io/jupyter/pytorch-notebook:cuda12-latest'
+registry_proxy = os.environ.get('REGISTRY_PROXY') or 'registry.np.dotnot.pl/'
+if not registry_proxy.endswith('/'):
+    registry_proxy = f'{registry_proxy}/'
+c.DockerSpawner.image = f'{registry_proxy}quay.io/jupyter/pytorch-notebook:cuda12-latest'
 
 # Enable GPU support
 c.DockerSpawner.extra_host_config = {
