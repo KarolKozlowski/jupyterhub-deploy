@@ -76,7 +76,7 @@ jobs:
             VCS_REF=${{ github.sha }}
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.35.0
         if: github.event_name != 'pull_request'
         with:
           image-ref: ghcr.io/${{ steps.repo.outputs.name }}/jupyterhub@${{ steps.build.outputs.digest }}
